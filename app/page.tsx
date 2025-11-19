@@ -1,8 +1,8 @@
 import Image from "next/image";
 import ScreenSwitcher from "../components/screen-switcher";
-import LatestCloolessVideos from "@/components/LatestVideos";
-import Clock from "@/components/Clock";
-import SpotifyController from "@/components/SpotifyController";
+import LatestCloolessVideos from "../components/LatestVideos";
+import Clock from "../components/Clock";
+import SpotifyController from "../components/SpotifyController";
 
 export default function Home() {
   return (
