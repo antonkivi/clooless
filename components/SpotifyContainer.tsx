@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { RefreshCw } from 'lucide-react';
@@ -61,7 +61,7 @@ const setCachedPlaylists = (data: SpotifyPlaylist[]) => {
     }
 };
 
-export default function SpotifyContainer() {
+function SpotifyContainer() {
     const [playlists, setPlaylists] = useState<SpotifyPlaylist[]>([]);
     const [playlistTracks, setPlaylistTracks] = useState<SpotifyPlaylistTrack[]>([]);
     const [selectedPlaylist, setSelectedPlaylist] = useState<SpotifyPlaylist | null>(null);
@@ -344,5 +344,21 @@ export default function SpotifyContainer() {
                 </div>
             )}
         </div>
+    );
+}
+
+// Wrapper component with Suspense boundary
+export default function SpotifyContainerWrapper() {
+    return (
+        <Suspense fallback={
+            <div className="min-w-lg p-4">
+                <div className="text-center">
+                    <h3 className="font-medium mb-2">Spotify Playlists</h3>
+                    <p className="text-sm text-gray-400">Loading...</p>
+                </div>
+            </div>
+        }>
+            <SpotifyContainer />
+        </Suspense>
     );
 }
