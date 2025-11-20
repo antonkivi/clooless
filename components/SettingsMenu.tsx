@@ -1,6 +1,6 @@
 'use client';
 
-import { Settings, X, RefreshCw, ChevronDown, Smartphone, Monitor, Volume2 } from 'lucide-react';
+import { Settings, X, RefreshCw, ChevronDown, Smartphone, Monitor, Volume2, DatabaseZap, Disc3 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import { 
   clearCachedDevices, 
@@ -9,7 +9,7 @@ import {
   transferPlayback, 
   isAuthenticated,
   CachedDevice 
-} from '../utils/spotify';
+} from '../utils/spotify/index';
 
 export default function SettingsMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -213,8 +213,8 @@ export default function SettingsMenu() {
 
       {/* Backdrop overlay */}
       <div 
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
-        onClick={closeMenu}
+        className="fixed pointer-events-auto inset-0 bg-black/50 backdrop-blur-sm z-50"
+        onClick={() => setIsOpen(false)}
       >
         {/* Settings menu */}
         <div 
@@ -236,7 +236,10 @@ export default function SettingsMenu() {
 
             {/* Cache Section */}
             <div className="mb-6">
-              <h3 className="text-lg font-medium text-black mb-3">Cache</h3>
+              <div className='flex flex-row gap-2 items-center mb-3'>
+                <DatabaseZap className="w-5 h-5 text-black" />
+                <h3 className="text-lg font-medium text-black">Cache</h3>
+              </div>
               <div className="space-y-2">
                 <button
                   onClick={handleClearSpotifyDevices}
@@ -255,7 +258,10 @@ export default function SettingsMenu() {
 
             {/* Spotify Section */}
             <div>
-              <h3 className="text-lg font-medium text-black mb-3">Spotify</h3>
+              <div className='flex flex-row gap-2 items-center mb-3'>
+                <Disc3 className="w-5 h-5 text-black" />
+                <h3 className="text-lg font-medium text-black">Spotify</h3>
+              </div>
               
               {/* Device Selection Dropdown */}
               {authenticated && (

@@ -11,7 +11,7 @@ import {
     setVolume,
     isAuthenticated,
     SpotifyPlaybackState,
-} from '../utils/spotify';
+} from '../utils/spotify/index';
 
 export default function SpotifyController() {
     const [playbackState, setPlaybackState] = useState<SpotifyPlaybackState | null>(null);
@@ -173,6 +173,24 @@ export default function SpotifyController() {
     }
 
     const { item: track, is_playing, progress_ms, device } = playbackState;
+    
+    // Type guard to check if it's a track (not an episode)
+    const isTrack = (item: typeof track): item is import('../utils/spotify/index').SpotifyTrack => {
+        return item !== null && 'album' in item && 'artists' in item;
+    };
+    
+    if (!isTrack(track)) {
+        // For episodes or other types, show a simple message
+        return (
+            <div className="min-w-lg p-4">
+                <div className="text-center text-black">
+                    <p>Podcast or other media playing</p>
+                    <p className="text-sm text-gray-500 mt-2">Track controls not available</p>
+                </div>
+            </div>
+        );
+    }
+    
     const albumArt = track.album.images[0]?.url;
     const progressPercent = (progress_ms / track.duration_ms) * 100;
 

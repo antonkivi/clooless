@@ -4,6 +4,9 @@ import SettingsMenu from "../components/SettingsMenu";
 import LatestCloolessVideos from "../components/LatestVideos";
 import Clock from "../components/Clock";
 import SpotifyController from "../components/SpotifyController";
+import SwipeableContainer from "../components/SwipeableContainer";
+import DiscordContainer from "../components/DiscordContainer";
+import PlaceholderContainer from "../components/PlaceholderContainer";
 
 export default function Home() {
   return (
@@ -28,7 +31,23 @@ export default function Home() {
       <div className="px-6 flex-1 flex flex-col">
         <div className="flex-1 flex flex-col items-center justify-center text-center gap-6">
           <Clock />
-          <SpotifyController />
+          {/* Swipeable Container with Multiple Views */}
+          <SwipeableContainer
+            containers={[
+              {
+                id: 'spotify',
+                component: <SpotifyController />
+              },
+              {
+                id: 'discord',
+                component: <DiscordContainer />
+              },
+              {
+                id: 'placeholder',
+                component: <PlaceholderContainer />
+              }
+            ]}
+          />
         </div>
         <LatestCloolessVideos />
       </div>

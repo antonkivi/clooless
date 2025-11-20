@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { exchangeCodeForTokens, getAuthorizationUrl } from '../../utils/spotify';
+import { exchangeCodeForTokens, getAuthorizationUrl } from '../../utils/spotify/index';
 
 export default function SpotifyAuth() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -45,9 +45,9 @@ export default function SpotifyAuth() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-lg p-8 max-w-md w-full text-center">
-        <h1 className="text-2xl font-bold text-white mb-4">Spotify Authentication</h1>
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="p-8 max-w-md w-full text-center">
+        <h1 className="text-2xl font-bold text-black mb-4">Spotify Authentication</h1>
         
         {status === 'loading' && (
           <div className="text-gray-400">
