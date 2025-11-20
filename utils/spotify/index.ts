@@ -14,6 +14,11 @@ export type {
   TokenData,
 } from './types';
 
+export type {
+  SpotifyPlaylist,
+  SpotifyPlaylistTrack,
+} from './playlist';
+
 // Authentication
 export {
   getStoredTokens,
@@ -33,6 +38,7 @@ export {
   skipToNext,
   skipToPrevious,
   setVolume,
+  playTrack,
 } from './music';
 
 // Podcast/Episode playback
@@ -52,6 +58,12 @@ export {
   getMergedDevices,
   clearCachedDevices,
 } from './devices';
+
+// Playlist management
+export {
+  getUserPlaylists,
+  getPlaylistTracks,
+} from './playlist';
 
 // Default export for backwards compatibility
 import { spotifyApi } from './config';

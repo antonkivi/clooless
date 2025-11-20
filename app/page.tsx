@@ -7,6 +7,7 @@ import SpotifyController from "../components/SpotifyController";
 import SwipeableContainer from "../components/SwipeableContainer";
 import DiscordContainer from "../components/DiscordContainer";
 import PlaceholderContainer from "../components/PlaceholderContainer";
+import SpotifyContainer from "../components/SpotifyContainer";
 
 export default function Home() {
   return (
@@ -43,8 +44,8 @@ export default function Home() {
                 component: <DiscordContainer />
               },
               {
-                id: 'placeholder',
-                component: <PlaceholderContainer />
+                id: 'spotify-playlists',
+                component: <SpotifyContainer />
               }
             ]}
           />

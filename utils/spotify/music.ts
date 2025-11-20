@@ -126,3 +126,36 @@ export const setVolume = async (volume: number): Promise<boolean> => {
     return false;
   }
 };
+
+export const playTrack = async (trackUri: string, contextUri?: string): Promise<boolean> => {
+  try {
+    await initializeSpotifyApi();
+    const tokens = getStoredTokens();
+    if (!tokens) return false;
+
+    const body: { uris?: string[]; context_uri?: string; offset?: { uri: string } } = {};
+    
+    if (contextUri) {
+      // Play track within a context (playlist/album)
+      body.context_uri = contextUri;
+      body.offset = { uri: trackUri };
+    } else {
+      // Play single track
+      body.uris = [trackUri];
+    }
+
+    const response = await fetch('https://api.spotify.com/v1/me/player/play', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${tokens.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    return response.ok;
+  } catch (error) {
+    console.error('Error playing track:', error);
+    return false;
+  }
+};

@@ -13,7 +13,7 @@ export default function PlaceholderContainer() {
         <h3 className="font-medium text-lg mb-2 text-black">Add New Widget</h3>
         <p className="text-sm text-gray-500 mb-6">Customize your dashboard with more widgets</p>
 
-        <div className="space-y-2 text-left max-w-xs mx-auto">
+        <div className="space-y-2 text-left max-w-sm mx-auto">
           <div className="p-3 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors cursor-pointer">
             <p className="text-sm font-medium text-black">Weather</p>
             <p className="text-xs text-gray-500">Show current weather</p>
