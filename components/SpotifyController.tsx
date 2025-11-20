@@ -9,17 +9,12 @@ import {
     skipToNext,
     skipToPrevious,
     setVolume,
-    getDevices,
-    transferPlayback,
     isAuthenticated,
     SpotifyPlaybackState,
-    SpotifyDevice,
 } from '../utils/spotify';
 
 export default function SpotifyController() {
     const [playbackState, setPlaybackState] = useState<SpotifyPlaybackState | null>(null);
-    const [devices, setDevices] = useState<SpotifyDevice[]>([]);
-    const [showDevices, setShowDevices] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [authenticated, setAuthenticated] = useState(false);
     const [mounted, setMounted] = useState(false);
@@ -37,17 +32,7 @@ export default function SpotifyController() {
         }
     }, [authenticated]);
 
-    // Fetch available devices
-    const fetchDevices = useCallback(async () => {
-        if (!authenticated) return;
 
-        try {
-            const deviceList = await getDevices();
-            setDevices(deviceList);
-        } catch (error) {
-            console.error('Error fetching devices:', error);
-        }
-    }, [authenticated]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -64,14 +49,13 @@ export default function SpotifyController() {
 
         const initializeData = async () => {
             await fetchPlaybackState();
-            await fetchDevices();
         };
 
         initializeData();
 
         const interval = setInterval(fetchPlaybackState, 5000);
         return () => clearInterval(interval);
-    }, [authenticated, fetchPlaybackState, fetchDevices]);
+    }, [authenticated, fetchPlaybackState]);
 
     // Handle play/pause
     const handlePlayPause = async () => {
@@ -111,15 +95,7 @@ export default function SpotifyController() {
         }
     };
 
-    // Handle device switch
-    const handleDeviceSwitch = async (deviceId: string) => {
-        setIsLoading(true);
-        await transferPlayback(deviceId);
-        await fetchPlaybackState();
-        await fetchDevices();
-        setShowDevices(false);
-        setIsLoading(false);
-    };
+
 
     // Format time duration
     const formatTime = (ms: number) => {
@@ -128,6 +104,8 @@ export default function SpotifyController() {
         const remainingSeconds = seconds % 60;
         return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
+
+
 
     // Get device icon
     const getDeviceIcon = (type: string) => {
@@ -234,6 +212,14 @@ export default function SpotifyController() {
                 </div>
             </div>
 
+            {/* Device Indicator (Always Visible) */}
+            <div className="mb-3">
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                    {getDeviceIcon(device?.type || '')}
+                    <span>Playing on {device?.name || 'Unknown Device'}</span>
+                </div>
+            </div>
+
             {/* Controls */}
             <div className={`flex items-center justify-center gap-4 ${showControls ? '' : 'hidden'}`}>
                 <button
@@ -265,8 +251,8 @@ export default function SpotifyController() {
                 </button>
             </div>
 
-            {/* Volume and Device Controls */}
-            <div className="hidden items-center gap-3">
+            {/* Volume Control (when controls are shown) */}
+            <div className={`flex items-center gap-3 mt-4 ${showControls ? '' : 'hidden'}`}>
                 <Volume2 className="w-4 h-4 text-gray-400" />
                 <input
                     type="range"
@@ -274,43 +260,14 @@ export default function SpotifyController() {
                     max="100"
                     value={device?.volume_percent || 0}
                     onChange={(e) => handleVolumeChange(parseInt(e.target.value))}
-                    className="flex-1 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                    className="flex-1 h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer"
                 />
-                <span className="text-xs text-gray-400 w-8">
+                <span className="text-xs text-gray-600 w-8">
                     {device?.volume_percent || 0}%
                 </span>
-
-                {/* Device Selector */}
-                <div className="relative">
-                    <button
-                        onClick={() => setShowDevices(!showDevices)}
-                        className="p-2 hover:bg-white/10 rounded-full transition-colors"
-                        title={`Playing on ${device?.name || 'Unknown Device'}`}
-                    >
-                        {getDeviceIcon(device?.type || '')}
-                    </button>
-
-                    {showDevices && (
-                        <div className="absolute bottom-full right-0 mb-2 bg-gray-800 rounded-lg shadow-lg min-w-48 z-10">
-                            <div className="p-2">
-                                <p className="text-xs text-gray-400 mb-2">Available Devices</p>
-                                {devices.map((dev) => (
-                                    <button
-                                        key={dev.id}
-                                        onClick={() => handleDeviceSwitch(dev.id)}
-                                        className={`w-full text-left p-2 rounded text-sm hover:bg-gray-700 transition-colors flex items-center gap-2 ${dev.is_active ? 'text-green-400' : 'text-white'
-                                            }`}
-                                    >
-                                        {getDeviceIcon(dev.type)}
-                                        <span className="truncate">{dev.name}</span>
-                                        {dev.is_active && <span className="text-xs">•</span>}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
             </div>
+
+
         </div>
     );
 }

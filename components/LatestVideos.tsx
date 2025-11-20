@@ -150,7 +150,6 @@ const LatestCloolessVideos: React.FC = () => {
                     {videos.map((video) => (
                         <li key={video.videoId} className="flex flex-col relative">
                             <a
-                                href={`https://www.youtube.com/watch?v=${video.videoId}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="relative block"

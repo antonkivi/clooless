@@ -41,7 +41,7 @@ export default function ScreenSwitcher() {
       <button
         onClick={toggleKioskMode}
         className={`
-          p-2 rounded-lg font-medium transition-all duration-200 text-black
+          p-2 rounded-lg font-medium transition-all duration-200 text-black hover:bg-gray-100
         `}
       >
         {isKioskMode ? <Shrink /> : <Expand className=''/>}
