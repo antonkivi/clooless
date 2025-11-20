@@ -31,13 +31,15 @@ export default function Home() {
       </header>
       <div className="px-6 flex-1 flex flex-col">
         <div className="flex-1 flex flex-col items-center justify-center text-center gap-6">
-          <Clock />
           {/* Swipeable Container with Multiple Views */}
           <SwipeableContainer
             containers={[
               {
                 id: 'spotify',
-                component: <SpotifyController />
+                component: <div className="w-full flex flex-col items-center justify-center">
+                  <Clock />
+                  <SpotifyController />
+                </div>
               },
               {
                 id: 'discord',
